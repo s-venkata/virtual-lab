@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Build output / bundler caches
+dist/
+.vite/
+
+# Environment files (never commit secrets)
+.env
+.env.*
+server/.env
+server/.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Private keys / certificates
+*.pem
+*.key
+*.crt
+
+# Local runtime config (useful for private TURN/ICE settings)
+config.local.*
+*.local.js
+*.local.json
+
+# Docker / reverse-proxy runtime data (generated locally)
+caddy_data/
+caddy_config/
+
+# User-provided splats (keep directory structure in repo, but don't commit data)
+public/splats/*
+!public/splats/.gitkeep
+!public/splats/README.md

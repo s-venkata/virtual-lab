@@ -1,0 +1,30 @@
+{
+  # Default compose setup targets localhost dev/self-hosting without requiring
+  # trusted TLS. For real domains, set `SITE_ADDRESS=your.domain` and remove
+  # this `auto_https off` stanza if you want automatic HTTPS.
+  auto_https off
+}
+
+{$SITE_ADDRESS::80} {
+  root * /srv
+  encode gzip
+
+  # Runtime config for browser (e.g. ICE servers); proxied to backend.
+  handle /config.js {
+    reverse_proxy backend:3001
+  }
+
+  # API
+  handle /api/* {
+    reverse_proxy backend:3001
+  }
+
+  # Colyseus (WebSocket). `handle_path` strips the `/colyseus` prefix to match
+  # the backend transport path.
+  handle /colyseus* {
+    uri strip_prefix /colyseus
+    reverse_proxy backend:3001
+  }
+
+  file_server
+}

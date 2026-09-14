@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "experiment-v1",
+  "title": "AI Lab Experiment Spec",
+  "description": "Declarative DSL describing a physics experiment built from primitives.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "room", "origin", "components"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^exp_[a-zA-Z0-9_-]{3,40}$",
+      "description": "Stable unique id (server may rewrite)."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "room": {
+      "type": "string",
+      "enum": ["aiLab"],
+      "description": "Target room. v1 only supports aiLab."
+    },
+    "origin": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 3,
+      "maxItems": 3,
+      "description": "World-space origin for the experiment. All component pos values are relative to this."
+    },
+    "startedAt": {
+      "type": "number",
+      "description": "Server-stamped epoch ms; used for deterministic physics t₀."
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 30,
+      "items": { "$ref": "#/definitions/component" }
+    },
+    "physics": { "$ref": "#/definitions/physics" },
+    "task":    { "$ref": "#/definitions/task" }
+  },
+  "definitions": {
+    "vec3": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "stand", "rod", "string", "bob", "spring",
+            "track", "cart", "ramp",
+            "lamp", "slide", "lens", "mirror", "screen",
+            "polarizer", "prism", "laser", "photodetector", "fiber",
+            "label", "readout", "slider", "button", "infoboard"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,30}$"
+        },
+        "pos": { "$ref": "#/definitions/vec3" },
+        "rot": { "$ref": "#/definitions/vec3" },
+        "attach": {
+          "type": "string",
+          "description": "Reference like 'standId.top' to anchor on another component."
+        },
+        "draggable": { "type": "boolean", "default": false },
+        "constrain": {
+          "type": "string",
+          "enum": ["none", "axis-x", "axis-y", "axis-z", "plane-xy", "plane-xz", "plane-yz", "pendulum"],
+          "default": "none"
+        },
+        "params": {
+          "type": "object",
+          "description": "Type-specific parameters (length, mass, focal, color, etc.)",
+          "additionalProperties": true
+        }
+      }
+    },
+    "physics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "drives"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["pendulum", "freefall", "spring-mass", "thin-lens", "snell", "polarization", "none"]
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Literals or '<id>.<field>' string references."
+        },
+        "drives": {
+          "type": "string",
+          "description": "Component id whose transform/state the solver writes."
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["goal"],
+      "properties": {
+        "goal": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "successWhen": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Safe expression evaluated each frame; truthy → success."
+        },
+        "reward": { "type": "string", "maxLength": 200 }
+      }
+    }
+  }
+}

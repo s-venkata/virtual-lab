@@ -1,0 +1,27 @@
+{
+  "name": "vr-lab",
+  "version": "1.0.0",
+  "main": "vite.config.js",
+  "scripts": {
+    "test":       "echo \"Error: no test specified\" && exit 1",
+    "build":      "vite build",
+    "preview":    "vite preview",
+    "dev":        "vite",
+    "dev:server": "cd server && npm run dev",
+    "dev:all":    "concurrently -n CLIENT,SERVER -c cyan,yellow \"npm run dev\" \"npm run dev:server\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
+    "concurrently":             "^9.2.1",
+    "vite":                     "^8.0.10"
+  },
+  "dependencies": {
+    "@babylonjs/core":    "^9.4.1",
+    "@babylonjs/loaders": "^9.4.1",
+    "colyseus.js":        "0.16.22"
+  }
+}

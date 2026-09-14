@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: ./server
+    env_file:
+      - ./server/.env
+    restart: unless-stopped
+    expose:
+      - "3001"
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.caddy
+    environment:
+      # Caddy listens on port 80 inside the container by default.
+      # Set to "your.domain" if you later enable Caddy automatic HTTPS (see README).
+      - SITE_ADDRESS=:80
+    ports:
+      - "8080:80"
+    volumes:
+      # Allow users to change assets without rebuilding the image.
+      - ./public/models:/srv/models:ro
+      - ./public/textures:/srv/textures:ro
+      - ./public/splats:/srv/splats:ro
+    depends_on:
+      - backend
+    restart: unless-stopped

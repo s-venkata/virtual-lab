@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>VR Optics Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="css/style.css"/>
+
+  <!-- Babylon.js CDN -->
+  <!-- Babylon.js CDN -->
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+  <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+  <script src="https://cdn.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+</head>
+<body>
+
+  <!-- Loading screen -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <div id="load-title">LOADING VR LAB</div>
+    <div id="load-bar-wrap"><div id="load-bar"></div></div>
+    <div id="load-label">Initialising…</div>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud">
+    🖥 <span>WASD</span> Move &nbsp;|&nbsp;
+    <span>Mouse</span> Look &nbsp;|&nbsp;
+    <span>Click canvas first</span>
+  </div>
+
+  <!-- VR Button -->
+  <button id="vr-btn">🥽 Enter VR</button>
+
+  <canvas id="renderCanvas"></canvas>
+
+  <!-- Bootstrap (keeps /config.js external and avoids bundling it into Vite output) -->
+  <script type="module">
+    await import(/* @vite-ignore */ '/config.js');
+    await import('/js/main.js');
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+# Prevent sending large/unnecessary files to the Docker daemon
+**/node_modules
+dist
+.vite
+.git
+.gitignore
+**/*.log
+
+# Secrets / local config
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/*.crt
+config.local.*
+*.local.js
+*.local.json
+
+# User-provided splats should not be sent to the Docker daemon by default
+public/splats/*
+!public/splats/.gitkeep
+!public/splats/README.md

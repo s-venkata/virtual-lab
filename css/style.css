@@ -1,0 +1,145 @@
+/* ── Reset ────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #060810;
+  overflow: hidden;
+  font-family: 'Courier New', monospace;
+}
+
+canvas {
+  width: 100vw !important;
+  height: 100vh !important;
+  touch-action: none;
+  display: block;
+}
+
+/* ── Loading screen ───────────────────────────── */
+#loading {
+  position: fixed;
+  inset: 0;
+  background: #060810;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: #00e5ff;
+  letter-spacing: 3px;
+  font-size: 15px;
+  transition: opacity 0.8s;
+}
+
+.spinner {
+  width: 52px;
+  height: 52px;
+  border: 3px solid #00e5ff22;
+  border-top-color: #00e5ff;
+  border-radius: 50%;
+  animation: spin 0.85s linear infinite;
+  margin-bottom: 22px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#load-bar-wrap {
+  width: 260px;
+  height: 4px;
+  background: #ffffff11;
+  border-radius: 4px;
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+#load-bar {
+  height: 100%;
+  width: 0%;
+  background: #00e5ff;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+#load-label {
+  margin-top: 12px;
+  color: #445;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+/* ── HUD ──────────────────────────────────────── */
+#hud {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.55);
+  color: #00e5ff;
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  border: 1px solid #00e5ff33;
+  pointer-events: none;
+  display: none;
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+}
+
+#hud span { color: #ffffff; }
+
+/* ── VR Button ────────────────────────────────── */
+#vr-btn {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: #00e5ff;
+  color: #000000;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  cursor: pointer;
+  letter-spacing: 1px;
+  display: none;
+  box-shadow: 0 0 24px #00e5ff55;
+  transition: background 0.2s;
+}
+
+#vr-btn:hover { background: #ffffff; }
+
+/* ── Voice Button ─────────────────────────────── */
+#voice-btn {
+  position: fixed;
+  bottom: 72px;
+  right: 22px;
+  background: #333344;
+  color: #ffffff;
+  border: 1px solid #555566;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, border-color 0.2s;
+  z-index: 100;
+}
+
+#voice-btn.voice-active {
+  background: #226633;
+  border-color: #44aa66;
+}
+
+#voice-btn.voice-muted {
+  background: #662222;
+  border-color: #aa4444;
+}
+
+#voice-btn.voice-denied {
+  background: #662222;
+  border-color: #aa4444;
+  cursor: not-allowed;
+  opacity: 0.7;
+}

@@ -1,0 +1,27 @@
+# Build the Vite frontend and package it into a tiny Caddy image that serves:
+# - dist/index.html + dist/assets/*
+# - models/, textures/, css/, splats/ (runtime-fetched assets)
+FROM node:20-alpine AS build
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+FROM caddy:2-alpine
+
+WORKDIR /srv
+COPY --from=build /app/dist/ /srv/
+COPY --from=build /app/public/models/ /srv/models/
+COPY --from=build /app/public/textures/ /srv/textures/
+COPY --from=build /app/css/ /srv/css/
+
+# Do not bake user-provided splats into the image by default. In Docker Compose,
+# `./public/splats` is mounted into `/srv/splats` so users can add/replace splats
+# without rebuilding. The repo still includes `public/splats/.gitkeep` + docs.
+RUN mkdir -p /srv/splats
+
+COPY Caddyfile /etc/caddy/Caddyfile
