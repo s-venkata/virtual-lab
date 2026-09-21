@@ -37,10 +37,17 @@
 
   <canvas id="renderCanvas"></canvas>
 
-  <!-- Bootstrap (keeps /config.js external and avoids bundling it into Vite output) -->
+  <!-- Bootstrap (keeps /config.js external and avoids bundling it into Vite output)
   <script type="module">
     await import(/* @vite-ignore */ '/config.js');
     await import('/js/main.js');
-  </script>
+  </script> -->
+
+  <script src="/config.js"></script>
+
+<!-- Main application -->
+<script type="module" src="/js/main.js"></script>
+
+
 </body>
 </html>
